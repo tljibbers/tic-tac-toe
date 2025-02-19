@@ -2,8 +2,9 @@ let grid = [['-','-','-'],['-','-','-'],['-','-','-']]
 let xStamp = 'x'
 let oStamp = 'o'
 let winner = false;
-let player1Turn = false;
+let player1Turn = true;
 let player2Turn = false;
+
 
 function printGrid(grid)
 {
@@ -13,115 +14,119 @@ function printGrid(grid)
 }
 function checkDiagonalsLeft(grid)
 {
-    if(grid[0][0] == grid[1][1] == grid[2][2] && grid[0][0] != '-')
+    if(((grid[0][0] == grid[1][1]) && (grid[0][0]== grid[2][2])) && grid[0][0] != '-')
     {
         return true;
-    }
-    else
-    {
-        return false;
     }
 }
 
 function checkDiagonalsRight(grid)
 {
-    if(grid[2][0] == grid[1][1] == grid[0][2] && grid[2][0] != '-')
+    if(((grid[2][0] === grid[1][1]) && (grid[2][0] === grid[0][2])) && (grid[2][0] != '-'))
     {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+         return true;
+    }  
 }
 
 function checkRows(grid)
 {
-    if(grid[0][0] == grid[1][0] == grid[2][0] && grid[0][0] != '-' || grid[0][1] == grid[1][1] == grid[2][1] && grid[0][1] != '-' || grid[0][2] == grid[1][2] == grid[2][2] && grid[0][2] != '-')
+    if(((grid[0][0] == grid[1][0]) && (grid[0][0] == grid[2][0])) && grid[0][0] != '-')
     {
         return true;
     }
-    else
+    else if(((grid[0][1] == grid[1][1]) && (grid[0][1]== grid[2][1])) && grid[0][1] != '-' )
     {
-        return false;
+        return true;
+    }
+    else if(((grid[0][2] == grid[1][2]) && (grid[0][2]== grid[2][2])) && grid[0][2] != '-')
+    {
+        return true;
+    }  
+}
+
+function checkColumns(grid)
+{
+    if(((grid[0][0] == grid[0][1]) && (grid[0][0] == grid[0][2])) && grid[0][0] != '-')
+    {
+        return true;
+    }
+    else if(((grid[1][0] == grid[1][1]) && (grid[1][0] == grid[1][2])) && grid[1][0] != '-')
+    {
+        return true;
+    }
+    else if(((grid[2][0] == grid[2][1]) && (grid[2][0] == grid[2][2])) && grid[2][0] != '-')
+    {
+        return true;
     }
     
 }
 
-function checkColumns()
+function chooseNumber(grid, player1Turn, player2Turn)
 {
-    if(grid[0][0] == grid[0][1] == grid[0][2] && grid[0][0] != '-'|| grid[1][0] == grid[1][1] == grid[1][2] && grid[1][0] != '-'|| grid[2][0] == grid[2][1] == grid[2][2] && grid[2][0] != '-')
+    let userInputX = prompt("Please enter a value between 0 and 2");
+    if(userInputX > 2)
     {
-        return true;
+        console.log("Number can't be higher than 2")
+        userInputX = prompt("Please enter a value between 0 and 2");
+    }
+    let userInputY = prompt("Please enter a value between 0 and 2");
+    if(userInputY > 2)
+    {
+        console.log("Number can't be higher than 2")
+        userInputY = prompt("Please enter a value between 0 and 2");
+    }
+
+    if(player1Turn == true && grid[userInputX][userInputY] == '-')
+    {
+        grid[userInputX][userInputY] = xStamp;
+        printGrid(grid);
+    }
+    else if(player2Turn == true && grid[userInputX][userInputY] == '-')
+    {
+        grid[userInputX][userInputY] = oStamp;
+        printGrid(grid);
     }
     else
     {
-        return false;
+        alert("Can't fill in a spot that has already been filled")
+        chooseNumber(grid, player1Turn, player2Turn);
+    }
+
+}
+
+function switchPlayer()
+{
+    if(player1Turn == true)
+    {
+        player1Turn = false;
+        player2Turn = true;
+    }
+    else
+    {
+        player1Turn = true;
+        player2Turn = false;
     }
 }
 
-function play(grid, player1Turn, player2Turn)
+function checkWinner()
 {
-    if(player1Turn == true || player2Turn == true)
+    if(checkColumns(grid) || checkDiagonalsLeft(grid) || checkDiagonalsRight(grid) || checkRows(grid))
     {
-        let userInputX = prompt("Please enter a value between 0 and 2");
-        if(userInputX > 2)
-        {
-            console.log("Number can't be higher than 2")
-            userInputX = prompt("Please enter a value between 0 and 2");
-        }
-        let userInputY = prompt("Please enter a value between 0 and 2");
-        if(userInputY > 2)
-        {
-            console.log("Number can't be higher than 2")
-            userInputY = prompt("Please enter a value between 0 and 2");
-        }
-        if(player1Turn == true)
-        {
-            if(grid[userInputX][userInputY] == '-')
-            {
-                grid[userInputX][userInputY] = xStamp;
-                printGrid(grid);
-                checkColumns(grid);
-                checkDiagonalsLeft(grid);
-                checkDiagonalsRight(grid);
-                checkRows(grid);
-                player1Turn = false;
-                player2Turn = true;
-                play(grid, player1Turn, player2Turn);
-            }
-            play(grid, player1Turn, player2Turn);
-        }
-        if(player2Turn == true)
-        {
-            if(grid[userInputX][userInputY] == '-')
-            {
-                grid[userInputX][userInputY] = oStamp;
-                printGrid(grid);
-                checkColumns(grid);
-                checkDiagonalsLeft(grid);
-                checkDiagonalsRight(grid);
-                checkRows(grid);
-                player2Turn = false;
-                player1Turn = true;
-                play(grid, player1Turn, player2Turn);
-            }
-        }
+        winner = true;
     }
-
-
-    
 }
 
 
 
 function gameLoop()
 {
-    player1Turn = true;
-    while(winner == false)
+    while(winner != true)
     {
-        play(grid, player1Turn, player2Turn)
+        chooseNumber(grid, player1Turn, player2Turn)
+        checkWinner()
+        switchPlayer()
     }
+    console.log('game won!')
 }
 
 gameLoop()
