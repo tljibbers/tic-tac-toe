@@ -5,6 +5,14 @@ let winner = false;
 let player1Turn = true;
 let player2Turn = false;
 
+const player1Name = document.getElementById('fname');
+const player2Name = document.getElementById('sname');
+const submitForm = document.querySelector('form');
+
+function createPlayer(name, playerTurn, playerMarkChoice) {
+    return {name, playerTurn, playerMarkChoice}
+}
+
 
 function printGrid(grid)
 {
@@ -116,6 +124,14 @@ function checkWinner()
     }
 }
 
+function checkTie()
+{
+    if(!grid.includes('-'))
+    {
+        console.log('Tie Game')
+    }
+}
+
 
 
 function gameLoop()
@@ -124,9 +140,30 @@ function gameLoop()
     {
         chooseNumber(grid, player1Turn, player2Turn)
         checkWinner()
+        checkTie()
         switchPlayer()
     }
     console.log('game won!')
 }
 
-gameLoop()
+function displayName()
+{
+    console.log(player1Name.value)
+}
+
+submitForm.addEventListener('submit', e=>{
+    if(player1Name == '' || player1Name == null)
+    {
+        e.preventDefault()
+    }
+    if(player2Name == '' || player2Name == null)
+    {
+        e.preventDefault()
+    }
+
+    displayName()
+})
+
+player1 = createPlayer('Test', player1Turn, 'false')
+player2 = createPlayer('Test', player2Turn, 'true')
+

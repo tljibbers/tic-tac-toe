@@ -1,0 +1,72 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.headerTitle {
+    font-family: 'Rubik';
+    font-size: 48px;
+    text-align: center;
+    background-color: black;
+    color: white;
+    height: 65px;
+    z-index: 999;
+    box-shadow: 0px 5px 5px gray;
+}
+
+.mainGameContainer {
+    flex: 1;
+    align-content: center;
+}
+.InputContainer {
+    border-style: ridge;
+    border-width: 20px;
+    border-color: black;
+    width: 25%;
+    margin: auto;
+    height: 400px;
+    align-content: center;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px lightgray;
+}
+
+.InputContainer label {
+    font-size: 50px;
+    font-family: 'Josefin Sans';
+    font-weight: 700;
+}
+
+.InputContainer input{
+    border: none;
+    background-color: ghostwhite;
+    border-radius: 20px;
+    width: 70%;
+    height: 40%;
+    
+
+}
+
+.playerInputForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.InputSplit {
+    margin-bottom: 15px;
+    
+}
+
+#submitButton {
+    width: 30%;
+    height: 40px;
+    margin: auto;
+    border-radius: 0;
+    margin-top: 20px;
+    background-color: gray;
+
+    
+    
+}
+
