@@ -65,8 +65,40 @@ body {
     border-radius: 0;
     margin-top: 20px;
     background-color: gray;
+   
+}
 
-    
+.StampContainer {
+    position: absolute;
+    display: flex;
+    border-style: dashed;
+    height: 400px;
+    width: 99.7%;
+    top: 30%;
+    justify-content: space-between;
+    align-content: center;
+    visibility: hidden;
     
 }
 
+.XBox, .OBox {
+    border-style: ridge;
+    border-width: 20px;
+    background-color: white;
+    height: 200px;
+    width: 200px;
+    margin: auto;
+}
+.XBox:hover {
+    border-color: green;
+    cursor: pointer;
+}
+
+.OBox:hover {
+    border-color: red;
+    cursor: pointer;
+}
+#xImage {
+    height: 70%;
+    width: 70%;
+}
