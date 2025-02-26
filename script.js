@@ -24,13 +24,6 @@ function createPlayer(name, playerTurn, playerScore, playerMarkChoice) {
     return {name, playerTurn, playerScore, playerMarkChoice}
 }
 
-
-function printGrid(grid)
-{
-    console.log(grid[0][0] + " " + grid[0][1] + " " + grid[0][2]);
-    console.log(grid[1][0] + " " + grid[1][1] + " " + grid[1][2]);
-    console.log(grid[2][0] + " " + grid[2][1] + " " + grid[2][2]);
-}
 function checkDiagonalsLeft(grid)
 {
     if(((grid[0].blankButtonMark == grid[4].blankButtonMark) && (grid[0].blankButtonMark== grid[8].blankButtonMark)) && (grid[0].blankButtonMark != '-'))
@@ -106,25 +99,14 @@ function checkWinner(grid)
 
 function checkTie(grid)
 {
-    if(!grid.includes('-') && winner != true)
+    const checkTieHelper = grid.some(obj => obj.blankButtonMark === '-');
+    console.log(checkTieHelper);
+    if(checkTieHelper == false && winner == false)
     {
-        console.log('Tie Game')
+        alert('tie');
     }
 }
 
-
-
-function gameLoop()
-{
-    while(winner != true)
-    {
-        chooseNumber(grid, player1Turn, player2Turn)
-        checkWinner()
-        checkTie()
-        switchPlayer()
-    }
-    console.log('game won!')
-}
 
 function createXOrOImage(player)
 {
