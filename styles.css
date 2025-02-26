@@ -30,6 +30,13 @@ body {
     text-align: center;
     border-radius: 5px;
     box-shadow: 5px 5px 5px lightgray;
+    animation-name: InputAppear;
+    animation-duration: 3s;
+}
+
+@keyframes InputAppear {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
 }
 
 .InputContainer label {
@@ -68,10 +75,14 @@ body {
    
 }
 
+#submitButton:hover {
+    background-color: green;
+    cursor: pointer;
+}
+
 .StampContainer {
     position: absolute;
     display: flex;
-    border-style: dashed;
     height: 400px;
     width: 99.7%;
     top: 30%;
@@ -80,25 +91,110 @@ body {
     visibility: hidden;
     
 }
-
+#chooseStampText {
+    position: absolute;
+    font-family: "Rubik";
+    font-size: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    opacity: 0;
+    
+}
 .XBox, .OBox {
+    position: relative;
     border-style: ridge;
     border-width: 20px;
     background-color: white;
     height: 200px;
     width: 200px;
     margin: auto;
+    transition: all 0.4s;
+    
+}
+
+.XBox{
+    right: 120px;
+    opacity: 0;
+}
+
+.OBox {
+    left: 120px;
+    opacity: 0;
 }
 .XBox:hover {
     border-color: green;
     cursor: pointer;
+    width: 205px;
+    height: 205px;
+    background-color: rgb(62, 235, 134);
+    
 }
 
 .OBox:hover {
     border-color: red;
     cursor: pointer;
+    width: 205px;
+    height: 205px;
+    background-color: rgb(241, 84, 84);
 }
 #xImage {
     height: 70%;
     width: 70%;
+}
+
+.ticTacToeGrid {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  
+    display: grid;
+    grid-template-columns: 200px 200px 200px;
+    grid-template-rows: 200px 200px 200px;
+    visibility: hidden;
+}
+
+@keyframes textMove {
+    0% {opacity: 0;}
+    100% {opacity: 100;}
+}
+
+@keyframes textMovePostSelection {
+    0% {opacity: 100;}
+    100% {opacity: 0;
+        transform: translateY(10%);}
+}
+
+@keyframes imageDisappear {
+    0% {opacity: 100;}
+    100% {opacity: 0; }
+}
+
+@keyframes xMove {
+    0% {opacity: 0;}
+    100% {opacity: 100;
+        transform:translateX(130%)}
+}
+
+@keyframes xMovePostSelection {
+    0% {opacity: 100;
+        transform: translateX(0%);}
+    100% {opacity: 0;
+        transform:translateX(-80%)}
+}
+
+
+@keyframes oMove {
+    0% {opacity: 0;}
+    100% {opacity: 100;
+        transform:translateX(-130%)}
+}
+
+@keyframes oMovePostSelection {
+    0% {opacity: 100;
+        transform: translateX(0%);}
+    100% {opacity: 0;
+        transform:translateX(80%)}
 }

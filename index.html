@@ -14,7 +14,7 @@
         <div class="headerTitle"> tic(x)tac(o)toe. </div>
         <div class="mainGameContainer">
             <div class="InputContainer">
-                <form class="playerInputForm">
+                <form id="form" class="playerInputForm">
                     <div class="InputSplit">
                         <label for="fname">Player 1 Name:</label><br>
                         <input type="text" id="fname" name="fname"><br>
@@ -28,8 +28,11 @@
                 </form>
             </div>
             <div class="StampContainer">
+                <div id="chooseStampText">Player 1, choose your stamp.</div>
                 <button class="XBox"><img id="xImage" src="images/x-symbol-svgrepo-com.svg"></button>
-                <button class="OBox"><img src="images/checkbox-blank-circle-outline.svg"></button>
+                <button class="OBox"><img id="oImage" src="images/checkbox-blank-circle-outline.svg"></button>
+            </div>
+            <div class="ticTacToeGrid">
             </div>
         </div>
     </body>
