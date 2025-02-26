@@ -1,4 +1,3 @@
-let grid = [['-','-','-'],['-','-','-'],['-','-','-']]
 let xStamp = 'x'
 let oStamp = 'o'
 let winner = false;
@@ -34,7 +33,7 @@ function printGrid(grid)
 }
 function checkDiagonalsLeft(grid)
 {
-    if(((grid[0][0] == grid[1][1]) && (grid[0][0]== grid[2][2])) && grid[0][0] != '-')
+    if(((grid[0].blankButtonMark == grid[4].blankButtonMark) && (grid[0].blankButtonMark== grid[8].blankButtonMark)) && (grid[0].blankButtonMark != '-'))
     {
         return true;
     }
@@ -42,7 +41,7 @@ function checkDiagonalsLeft(grid)
 
 function checkDiagonalsRight(grid)
 {
-    if(((grid[2][0] === grid[1][1]) && (grid[2][0] === grid[0][2])) && (grid[2][0] != '-'))
+    if(((grid[6].blankButtonMark == grid[4].blankButtonMark) && (grid[6].blankButtonMark == grid[2].blankButtonMark)) && (grid[6].blankButtonMark != '-'))
     {
          return true;
     }  
@@ -50,15 +49,15 @@ function checkDiagonalsRight(grid)
 
 function checkRows(grid)
 {
-    if(((grid[0][0] == grid[1][0]) && (grid[0][0] == grid[2][0])) && grid[0][0] != '-')
+    if(((grid[0].blankButtonMark == grid[3].blankButtonMark) && (grid[0].blankButtonMark == grid[6].blankButtonMark)) && grid[0].blankButtonMark != '-')
     {
         return true;
     }
-    else if(((grid[0][1] == grid[1][1]) && (grid[0][1]== grid[2][1])) && grid[0][1] != '-' )
+    else if(((grid[1].blankButtonMark == grid[4].blankButtonMark) && (grid[1].blankButtonMark == grid[7].blankButtonMark)) && grid[1].blankButtonMark != '-' )
     {
         return true;
     }
-    else if(((grid[0][2] == grid[1][2]) && (grid[0][2]== grid[2][2])) && grid[0][2] != '-')
+    else if(((grid[2].blankButtonMark == grid[5].blankButtonMark) && (grid[2].blankButtonMark == grid[8].blankButtonMark)) && grid[2].blankButtonMark != '-')
     {
         return true;
     }  
@@ -66,53 +65,21 @@ function checkRows(grid)
 
 function checkColumns(grid)
 {
-    if(((grid[0][0] == grid[0][1]) && (grid[0][0] == grid[0][2])) && grid[0][0] != '-')
+    if(((grid[0].blankButtonMark == grid[1].blankButtonMark) && (grid[0].blankButtonMark == grid[2].blankButtonMark)) && grid[0].blankButtonMark != '-')
     {
         return true;
     }
-    else if(((grid[1][0] == grid[1][1]) && (grid[1][0] == grid[1][2])) && grid[1][0] != '-')
+    else if(((grid[3].blankButtonMark == grid[4].blankButtonMark) && (grid[3].blankButtonMark == grid[5].blankButtonMark)) && grid[3].blankButtonMark != '-')
     {
         return true;
     }
-    else if(((grid[2][0] == grid[2][1]) && (grid[2][0] == grid[2][2])) && grid[2][0] != '-')
+    else if(((grid[6].blankButtonMark == grid[7].blankButtonMark) && (grid[6].blankButtonMark == grid[8].blankButtonMark)) && grid[6].blankButtonMark != '-')
     {
         return true;
     }
     
 }
 
-function chooseNumber(grid, player1Turn, player2Turn)
-{
-    let userInputX = prompt("Please enter a value between 0 and 2");
-    if(userInputX > 2)
-    {
-        console.log("Number can't be higher than 2")
-        userInputX = prompt("Please enter a value between 0 and 2");
-    }
-    let userInputY = prompt("Please enter a value between 0 and 2");
-    if(userInputY > 2)
-    {
-        console.log("Number can't be higher than 2")
-        userInputY = prompt("Please enter a value between 0 and 2");
-    }
-
-    if(player1Turn == true && grid[userInputX][userInputY] == '-')
-    {
-        grid[userInputX][userInputY] = xStamp;
-        printGrid(grid);
-    }
-    else if(player2Turn == true && grid[userInputX][userInputY] == '-')
-    {
-        grid[userInputX][userInputY] = oStamp;
-        printGrid(grid);
-    }
-    else
-    {
-        alert("Can't fill in a spot that has already been filled")
-        chooseNumber(grid, player1Turn, player2Turn);
-    }
-
-}
 
 function switchPlayer(player1, player2)
 {
@@ -128,17 +95,18 @@ function switchPlayer(player1, player2)
     }
 }
 
-function checkWinner()
+function checkWinner(grid)
 {
     if(checkColumns(grid) || checkDiagonalsLeft(grid) || checkDiagonalsRight(grid) || checkRows(grid))
     {
+        alert('winner')
         winner = true;
     }
 }
 
-function checkTie()
+function checkTie(grid)
 {
-    if(!grid.includes('-'))
+    if(!grid.includes('-') && winner != true)
     {
         console.log('Tie Game')
     }
@@ -202,11 +170,31 @@ function createDomGrid(player1, player2)
                     const imgTest = createXOrOImage(player1);
                     blankButton.appendChild(imgTest);
                     domGrid[getIndex].alreadyChecked = true;
-                    const getX = document.getElementById('StampImageHover')
-                    while(getX.parentNode)
+                    domGrid[getIndex].blankButtonMark = player1.playerMarkChoice;
+                    console.log(domGrid[getIndex].blankButtonMark);
+                    const getStampIndex = document.getElementById('StampImageHover')
+                    while(getStampIndex.parentNode)
                     {
-                        getX.parentNode.removeChild(getX);
-                    }    
+                        getStampIndex.parentNode.removeChild(getStampIndex);
+                    }
+                    checkWinner(domGrid)
+                    checkTie(domGrid)
+                    switchPlayer(player1, player2)   
+                }
+                else if(player2.playerTurn == true)
+                {
+                    const imgTest = createXOrOImage(player2);
+                    blankButton.appendChild(imgTest);
+                    domGrid[getIndex].alreadyChecked = true;
+                    domGrid[getIndex].blankButtonMark = player2.playerMarkChoice;
+                    const getStampIndex = document.getElementById('StampImageHover')
+                    while(getStampIndex.parentNode)
+                    {
+                        getStampIndex.parentNode.removeChild(getStampIndex);
+                    }
+                    checkWinner(domGrid)
+                    checkTie(domGrid)
+                    switchPlayer(player1, player2)
                 }
             })
 
@@ -215,9 +203,15 @@ function createDomGrid(player1, player2)
                 blankButton.style.cursor = 'pointer'
                 blankButton.style.backgroundColor = '#fafafa'
                 if(player1.playerTurn == true && domGrid[getIndex].alreadyChecked == false)
-                {
-                    
+                {   
                     const imgTest = createXOrOImage(player1);
+                    imgTest.id = 'StampImageHover'
+                    imgTest.style.opacity = '0.5'
+                    blankButton.appendChild(imgTest);
+                }
+                if(player2.playerTurn == true && domGrid[getIndex].alreadyChecked == false)
+                {
+                    const imgTest = createXOrOImage(player2);
                     imgTest.id = 'StampImageHover'
                     imgTest.style.opacity = '0.5'
                     blankButton.appendChild(imgTest);
@@ -228,6 +222,14 @@ function createDomGrid(player1, player2)
                 blankButton.style.backgroundColor = 'white';
                 const getIndex = domGrid.findIndex(i => i.storeBlankButton === blankButton) 
                 if(player1.playerTurn == true && domGrid[getIndex].alreadyChecked == false)
+                {
+                    const getX = document.getElementById('StampImageHover')
+                    while(getX.parentNode)
+                    {
+                        getX.parentNode.removeChild(getX);
+                    }
+                }
+                if(player2.playerTurn == true && domGrid[getIndex].alreadyChecked == false)
                 {
                     const getX = document.getElementById('StampImageHover')
                     while(getX.parentNode)
@@ -271,9 +273,6 @@ function setUpGameDOMXChoice() {
     ticTacToeContainer.style.visibility = 'visible';
     
 }
-
-
-
 
 
 submitForm.addEventListener('submit', e=>{
