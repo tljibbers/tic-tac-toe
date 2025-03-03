@@ -16,9 +16,18 @@ const stampContainer = document.querySelector(".StampContainer");
 const xBox = document.querySelector(".XBox");
 const oBox = document.querySelector(".OBox");
 const ticTacToeContainer = document.querySelector(".ticTacToeGrid");
+const nameHolder = document.querySelector('.NameHolder');
+const oContainer = document.querySelector('.oContainer');
+const xContainer = document.querySelector('.xContainer');
+const p1DisplayNameHolder = document.createElement('div');
+const p2DisplayNameHolder = document.createElement('div');
+const resetContainer = document.querySelector('.resetGame');
+const resetButton = document.querySelector('.ResetButton');
 
 const player1 = createPlayer(player1Name.value, true, 0, null)
 const player2 = createPlayer(player2Name.value, false, 0, null)
+
+
 
 function createPlayer(name, playerTurn, playerScore, playerMarkChoice) {
     return {name, playerTurn, playerScore, playerMarkChoice}
@@ -94,6 +103,9 @@ function checkWinner(grid)
     {
         alert('winner')
         winner = true;
+        console.log(player1.playerTurn)
+        console.log(player2.playerTurn)
+        postWin()
     }
 }
 
@@ -131,9 +143,51 @@ function createXOrOImage(player)
     return null;
 }
 
+function nameStyling(position1, position2)
+{
+    position1.style.position = 'absolute'
+    position1.style.left = '200px'
+    position1.style.bottom = '140px'
+    position1.style.fontFamily = 'Rubik'
+    position1.style.fontSize = '20px'
+    
+    position2.style.position = 'absolute'
+    position2.style.right = '200px'
+    position2.style.fontFamily = 'Rubik'
+    position2.style.fontSize = '20px'
+    position2.style.bottom = '140px'
+}
+
+function createDisplayNamesDOM()
+{
+    nameHolder.style.visibility = 'visible'
+    const player1DisplayName = document.createTextNode('Player 1:' + " " + player1Name.value);
+    const player2DisplayName = document.createTextNode('Player 2:' + " " + player2Name.value);
+    p1DisplayNameHolder.appendChild(player1DisplayName);
+    p2DisplayNameHolder.appendChild(player2DisplayName);
+    nameHolder.style.animation = 'textMove 1s ease-in forwards'
+
+
+    if(xButtonPressed == true)
+    {
+        nameStyling(p1DisplayNameHolder, p2DisplayNameHolder)
+        document.querySelector('.xBoxContainerName').appendChild(p1DisplayNameHolder)
+        document.querySelector('.oBoxContainerName').appendChild(p2DisplayNameHolder)
+    }
+    else if(oButtonPressed == true)
+    {
+        nameStyling(p2DisplayNameHolder, p1DisplayNameHolder)
+        document.querySelector('.oBoxContainerName').appendChild(p1DisplayNameHolder)
+        document.querySelector('.xBoxContainerName').appendChild(p2DisplayNameHolder)
+    }
+
+}
+
 
 function createDomGrid(player1, player2)
 {
+   createDisplayNamesDOM()
+
     for(let i = 0; i <= 2; i++)
     {
         for(let j = 0; j <= 2; j++)
@@ -143,6 +197,7 @@ function createDomGrid(player1, player2)
             blankButton.style.backgroundColor = 'white';
             blankButton.className = 'ticTacToeButton';
             ticTacToeContainer.appendChild(blankButton);
+            ticTacToeContainer.style.animation = 'textMove 2s ease-in forwards'
             domGrid.push({storeBlankButton: blankButton, blankButtonMark: '-', alreadyChecked : false});
 
             blankButton.addEventListener('click', function(){
@@ -222,8 +277,31 @@ function createDomGrid(player1, player2)
             })
         }
     }
-    console.log(domGrid[0])
     
+}
+
+function postWin()
+{
+    document.querySelector('.resetGame').style.visibility = 'visible'
+    document.querySelector('.resetGame').style.animation = 'resetGamePopUp 1s ease-out forwards'
+    if(player1.playerTurn == true)
+    {
+        const p1WinContainer = document.createElement('div')
+        const p1Win = document.createTextNode(player1Name.value + " " + 'Wins!')
+        p1WinContainer.style.fontFamily = 'Rubik'
+        p1WinContainer.style.fontSize = '50px'
+        p1WinContainer.appendChild(p1Win)
+        resetContainer.appendChild(p1WinContainer)
+    }
+    if(player2.playerTurn == true)
+    {
+        const p2WinContainer = document.createElement('div')
+        const p2Win = document.createTextNode(player2Name.value + " " + 'Wins!')
+        p2WinContainer.style.fontFamily = 'Rubik'
+        p2WinContainer.style.fontSize = '50px'
+        p2WinContainer.appendChild(p2Win)
+        resetContainer.appendChild(p2WinContainer)
+    }
 }
 
 function hideSubmitForm()
@@ -251,7 +329,7 @@ function setUpGameDOMXChoice() {
         document.getElementById('xImage').style.animationDelay = "0.5s"
     }
     document.querySelector('.StampContainer').style.animation = 'imageDisappear 1s ease-out forwards'
-    document.querySelector('.StampContainer').style.animationDelay = "1s"
+    document.querySelector('.StampContainer').style.animationDelay = "0.5s"
     ticTacToeContainer.style.visibility = 'visible';
     
 }
@@ -286,6 +364,10 @@ oBox.addEventListener("click", function(){
     player2.playerMarkChoice = 'x';
     setUpGameDOMXChoice();
     createDomGrid(player1, player2);
+})
+
+resetButton.addEventListener("click", function(){
+    location.reload();
 })
 
 
