@@ -1,4 +1,3 @@
-let grid = [['-','-','-'],['-','-','-'],['-','-','-']]
 let xStamp = 'x'
 let oStamp = 'o'
 let winner = false;
@@ -17,24 +16,26 @@ const stampContainer = document.querySelector(".StampContainer");
 const xBox = document.querySelector(".XBox");
 const oBox = document.querySelector(".OBox");
 const ticTacToeContainer = document.querySelector(".ticTacToeGrid");
+const nameHolder = document.querySelector('.NameHolder');
+const oContainer = document.querySelector('.oContainer');
+const xContainer = document.querySelector('.xContainer');
+const p1DisplayNameHolder = document.createElement('div');
+const p2DisplayNameHolder = document.createElement('div');
+const resetContainer = document.querySelector('.resetGame');
+const resetButton = document.querySelector('.ResetButton');
 
 const player1 = createPlayer(player1Name.value, true, 0, null)
 const player2 = createPlayer(player2Name.value, false, 0, null)
+
+
 
 function createPlayer(name, playerTurn, playerScore, playerMarkChoice) {
     return {name, playerTurn, playerScore, playerMarkChoice}
 }
 
-
-function printGrid(grid)
-{
-    console.log(grid[0][0] + " " + grid[0][1] + " " + grid[0][2]);
-    console.log(grid[1][0] + " " + grid[1][1] + " " + grid[1][2]);
-    console.log(grid[2][0] + " " + grid[2][1] + " " + grid[2][2]);
-}
 function checkDiagonalsLeft(grid)
 {
-    if(((grid[0][0] == grid[1][1]) && (grid[0][0]== grid[2][2])) && grid[0][0] != '-')
+    if(((grid[0].blankButtonMark == grid[4].blankButtonMark) && (grid[0].blankButtonMark== grid[8].blankButtonMark)) && (grid[0].blankButtonMark != '-'))
     {
         return true;
     }
@@ -42,7 +43,7 @@ function checkDiagonalsLeft(grid)
 
 function checkDiagonalsRight(grid)
 {
-    if(((grid[2][0] === grid[1][1]) && (grid[2][0] === grid[0][2])) && (grid[2][0] != '-'))
+    if(((grid[6].blankButtonMark == grid[4].blankButtonMark) && (grid[6].blankButtonMark == grid[2].blankButtonMark)) && (grid[6].blankButtonMark != '-'))
     {
          return true;
     }  
@@ -50,15 +51,15 @@ function checkDiagonalsRight(grid)
 
 function checkRows(grid)
 {
-    if(((grid[0][0] == grid[1][0]) && (grid[0][0] == grid[2][0])) && grid[0][0] != '-')
+    if(((grid[0].blankButtonMark == grid[3].blankButtonMark) && (grid[0].blankButtonMark == grid[6].blankButtonMark)) && grid[0].blankButtonMark != '-')
     {
         return true;
     }
-    else if(((grid[0][1] == grid[1][1]) && (grid[0][1]== grid[2][1])) && grid[0][1] != '-' )
+    else if(((grid[1].blankButtonMark == grid[4].blankButtonMark) && (grid[1].blankButtonMark == grid[7].blankButtonMark)) && grid[1].blankButtonMark != '-' )
     {
         return true;
     }
-    else if(((grid[0][2] == grid[1][2]) && (grid[0][2]== grid[2][2])) && grid[0][2] != '-')
+    else if(((grid[2].blankButtonMark == grid[5].blankButtonMark) && (grid[2].blankButtonMark == grid[8].blankButtonMark)) && grid[2].blankButtonMark != '-')
     {
         return true;
     }  
@@ -66,53 +67,21 @@ function checkRows(grid)
 
 function checkColumns(grid)
 {
-    if(((grid[0][0] == grid[0][1]) && (grid[0][0] == grid[0][2])) && grid[0][0] != '-')
+    if(((grid[0].blankButtonMark == grid[1].blankButtonMark) && (grid[0].blankButtonMark == grid[2].blankButtonMark)) && grid[0].blankButtonMark != '-')
     {
         return true;
     }
-    else if(((grid[1][0] == grid[1][1]) && (grid[1][0] == grid[1][2])) && grid[1][0] != '-')
+    else if(((grid[3].blankButtonMark == grid[4].blankButtonMark) && (grid[3].blankButtonMark == grid[5].blankButtonMark)) && grid[3].blankButtonMark != '-')
     {
         return true;
     }
-    else if(((grid[2][0] == grid[2][1]) && (grid[2][0] == grid[2][2])) && grid[2][0] != '-')
+    else if(((grid[6].blankButtonMark == grid[7].blankButtonMark) && (grid[6].blankButtonMark == grid[8].blankButtonMark)) && grid[6].blankButtonMark != '-')
     {
         return true;
     }
     
 }
 
-function chooseNumber(grid, player1Turn, player2Turn)
-{
-    let userInputX = prompt("Please enter a value between 0 and 2");
-    if(userInputX > 2)
-    {
-        console.log("Number can't be higher than 2")
-        userInputX = prompt("Please enter a value between 0 and 2");
-    }
-    let userInputY = prompt("Please enter a value between 0 and 2");
-    if(userInputY > 2)
-    {
-        console.log("Number can't be higher than 2")
-        userInputY = prompt("Please enter a value between 0 and 2");
-    }
-
-    if(player1Turn == true && grid[userInputX][userInputY] == '-')
-    {
-        grid[userInputX][userInputY] = xStamp;
-        printGrid(grid);
-    }
-    else if(player2Turn == true && grid[userInputX][userInputY] == '-')
-    {
-        grid[userInputX][userInputY] = oStamp;
-        printGrid(grid);
-    }
-    else
-    {
-        alert("Can't fill in a spot that has already been filled")
-        chooseNumber(grid, player1Turn, player2Turn);
-    }
-
-}
 
 function switchPlayer(player1, player2)
 {
@@ -128,35 +97,28 @@ function switchPlayer(player1, player2)
     }
 }
 
-function checkWinner()
+function checkWinner(grid)
 {
     if(checkColumns(grid) || checkDiagonalsLeft(grid) || checkDiagonalsRight(grid) || checkRows(grid))
     {
+        alert('winner')
         winner = true;
+        console.log(player1.playerTurn)
+        console.log(player2.playerTurn)
+        postWin()
     }
 }
 
-function checkTie()
+function checkTie(grid)
 {
-    if(!grid.includes('-'))
+    const checkTieHelper = grid.some(obj => obj.blankButtonMark === '-');
+    console.log(checkTieHelper);
+    if(checkTieHelper == false && winner == false)
     {
-        console.log('Tie Game')
+        alert('tie');
     }
 }
 
-
-
-function gameLoop()
-{
-    while(winner != true)
-    {
-        chooseNumber(grid, player1Turn, player2Turn)
-        checkWinner()
-        checkTie()
-        switchPlayer()
-    }
-    console.log('game won!')
-}
 
 function createXOrOImage(player)
 {
@@ -181,9 +143,51 @@ function createXOrOImage(player)
     return null;
 }
 
+function nameStyling(position1, position2)
+{
+    position1.style.position = 'absolute'
+    position1.style.left = '200px'
+    position1.style.bottom = '140px'
+    position1.style.fontFamily = 'Rubik'
+    position1.style.fontSize = '20px'
+    
+    position2.style.position = 'absolute'
+    position2.style.right = '200px'
+    position2.style.fontFamily = 'Rubik'
+    position2.style.fontSize = '20px'
+    position2.style.bottom = '140px'
+}
+
+function createDisplayNamesDOM()
+{
+    nameHolder.style.visibility = 'visible'
+    const player1DisplayName = document.createTextNode('Player 1:' + " " + player1Name.value);
+    const player2DisplayName = document.createTextNode('Player 2:' + " " + player2Name.value);
+    p1DisplayNameHolder.appendChild(player1DisplayName);
+    p2DisplayNameHolder.appendChild(player2DisplayName);
+    nameHolder.style.animation = 'textMove 1s ease-in forwards'
+
+
+    if(xButtonPressed == true)
+    {
+        nameStyling(p1DisplayNameHolder, p2DisplayNameHolder)
+        document.querySelector('.xBoxContainerName').appendChild(p1DisplayNameHolder)
+        document.querySelector('.oBoxContainerName').appendChild(p2DisplayNameHolder)
+    }
+    else if(oButtonPressed == true)
+    {
+        nameStyling(p2DisplayNameHolder, p1DisplayNameHolder)
+        document.querySelector('.oBoxContainerName').appendChild(p1DisplayNameHolder)
+        document.querySelector('.xBoxContainerName').appendChild(p2DisplayNameHolder)
+    }
+
+}
+
 
 function createDomGrid(player1, player2)
 {
+   createDisplayNamesDOM()
+
     for(let i = 0; i <= 2; i++)
     {
         for(let j = 0; j <= 2; j++)
@@ -193,6 +197,7 @@ function createDomGrid(player1, player2)
             blankButton.style.backgroundColor = 'white';
             blankButton.className = 'ticTacToeButton';
             ticTacToeContainer.appendChild(blankButton);
+            ticTacToeContainer.style.animation = 'textMove 2s ease-in forwards'
             domGrid.push({storeBlankButton: blankButton, blankButtonMark: '-', alreadyChecked : false});
 
             blankButton.addEventListener('click', function(){
@@ -202,11 +207,31 @@ function createDomGrid(player1, player2)
                     const imgTest = createXOrOImage(player1);
                     blankButton.appendChild(imgTest);
                     domGrid[getIndex].alreadyChecked = true;
-                    const getX = document.getElementById('StampImageHover')
-                    while(getX.parentNode)
+                    domGrid[getIndex].blankButtonMark = player1.playerMarkChoice;
+                    console.log(domGrid[getIndex].blankButtonMark);
+                    const getStampIndex = document.getElementById('StampImageHover')
+                    while(getStampIndex.parentNode)
                     {
-                        getX.parentNode.removeChild(getX);
-                    }    
+                        getStampIndex.parentNode.removeChild(getStampIndex);
+                    }
+                    checkWinner(domGrid)
+                    checkTie(domGrid)
+                    switchPlayer(player1, player2)   
+                }
+                else if(player2.playerTurn == true)
+                {
+                    const imgTest = createXOrOImage(player2);
+                    blankButton.appendChild(imgTest);
+                    domGrid[getIndex].alreadyChecked = true;
+                    domGrid[getIndex].blankButtonMark = player2.playerMarkChoice;
+                    const getStampIndex = document.getElementById('StampImageHover')
+                    while(getStampIndex.parentNode)
+                    {
+                        getStampIndex.parentNode.removeChild(getStampIndex);
+                    }
+                    checkWinner(domGrid)
+                    checkTie(domGrid)
+                    switchPlayer(player1, player2)
                 }
             })
 
@@ -215,9 +240,15 @@ function createDomGrid(player1, player2)
                 blankButton.style.cursor = 'pointer'
                 blankButton.style.backgroundColor = '#fafafa'
                 if(player1.playerTurn == true && domGrid[getIndex].alreadyChecked == false)
-                {
-                    
+                {   
                     const imgTest = createXOrOImage(player1);
+                    imgTest.id = 'StampImageHover'
+                    imgTest.style.opacity = '0.5'
+                    blankButton.appendChild(imgTest);
+                }
+                if(player2.playerTurn == true && domGrid[getIndex].alreadyChecked == false)
+                {
+                    const imgTest = createXOrOImage(player2);
                     imgTest.id = 'StampImageHover'
                     imgTest.style.opacity = '0.5'
                     blankButton.appendChild(imgTest);
@@ -235,11 +266,42 @@ function createDomGrid(player1, player2)
                         getX.parentNode.removeChild(getX);
                     }
                 }
+                if(player2.playerTurn == true && domGrid[getIndex].alreadyChecked == false)
+                {
+                    const getX = document.getElementById('StampImageHover')
+                    while(getX.parentNode)
+                    {
+                        getX.parentNode.removeChild(getX);
+                    }
+                }
             })
         }
     }
-    console.log(domGrid[0])
     
+}
+
+function postWin()
+{
+    document.querySelector('.resetGame').style.visibility = 'visible'
+    document.querySelector('.resetGame').style.animation = 'resetGamePopUp 1s ease-out forwards'
+    if(player1.playerTurn == true)
+    {
+        const p1WinContainer = document.createElement('div')
+        const p1Win = document.createTextNode(player1Name.value + " " + 'Wins!')
+        p1WinContainer.style.fontFamily = 'Rubik'
+        p1WinContainer.style.fontSize = '50px'
+        p1WinContainer.appendChild(p1Win)
+        resetContainer.appendChild(p1WinContainer)
+    }
+    if(player2.playerTurn == true)
+    {
+        const p2WinContainer = document.createElement('div')
+        const p2Win = document.createTextNode(player2Name.value + " " + 'Wins!')
+        p2WinContainer.style.fontFamily = 'Rubik'
+        p2WinContainer.style.fontSize = '50px'
+        p2WinContainer.appendChild(p2Win)
+        resetContainer.appendChild(p2WinContainer)
+    }
 }
 
 function hideSubmitForm()
@@ -267,13 +329,10 @@ function setUpGameDOMXChoice() {
         document.getElementById('xImage').style.animationDelay = "0.5s"
     }
     document.querySelector('.StampContainer').style.animation = 'imageDisappear 1s ease-out forwards'
-    document.querySelector('.StampContainer').style.animationDelay = "1s"
+    document.querySelector('.StampContainer').style.animationDelay = "0.5s"
     ticTacToeContainer.style.visibility = 'visible';
     
 }
-
-
-
 
 
 submitForm.addEventListener('submit', e=>{
@@ -305,6 +364,10 @@ oBox.addEventListener("click", function(){
     player2.playerMarkChoice = 'x';
     setUpGameDOMXChoice();
     createDomGrid(player1, player2);
+})
+
+resetButton.addEventListener("click", function(){
+    location.reload();
 })
 
 

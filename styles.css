@@ -145,6 +145,40 @@ body {
     width: 70%;
 }
 
+.NameHolder {
+    position: absolute;
+    display: flex;
+    height: 400px;
+    width: 99.7%;
+    top: 30%;
+    justify-content: space-between;
+    align-content: center;
+    visibility: hidden;
+}
+
+.oContainer, .xContainer {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-style: ridge;
+    border-width: 20px;
+    background-color: white;
+    height: 150px;
+    width: 150px;
+    margin: auto;
+    top: 40px;
+}
+
+.oContainer{
+    right: 200px;
+    border-color: red;
+}
+
+.xContainer{
+    left: 200px;
+    border-color: green;
+}
+
 .ticTacToeGrid {
     position: absolute;
     top: 50%;
@@ -154,6 +188,26 @@ body {
     grid-template-columns: 200px 200px 200px;
     grid-template-rows: 200px 200px 200px;
     visibility: hidden;
+}
+
+.resetGame {
+    position: absolute;
+    background-color: white;
+    width: 30%;
+    height: 30%;
+    top: 35%;
+    left: 35%;
+    border-radius: 20px;
+    border-style: solid;
+    visibility: hidden;
+    text-align: center;
+}
+
+.ResetButton {
+    position: relative;
+    top: 60%;
+    width: 30%;
+    height: 20%;
 }
 
 @keyframes textMove {
@@ -197,4 +251,10 @@ body {
         transform: translateX(0%);}
     100% {opacity: 0;
         transform:translateX(80%)}
+}
+
+@keyframes resetGamePopUp {
+    0% {transform: scale(0);}
+    50% {transform: scale(1.1);}
+    100% {transform: scale(1);}
 }
